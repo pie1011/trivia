@@ -94,3 +94,46 @@ This is a Next.js 15 trivia application bootstrapped with `create-next-app`. The
 - Implement proper loading states
 - Consider caching categories and recent questions
 - Optimize re-renders with React.memo and useCallback where needed
+
+## Key Features Implemented ✅
+
+### Components Created:
+- **QuestionCard** (`src/components/QuestionCard.js`) - Interactive question display with timer, answer selection, and feedback
+
+### Game Setup Screen
+- Category selection from Open Trivia Database API
+- Difficulty levels (Easy, Medium, Hard)
+- Question quantity (5, 10, 15, 20)
+- Question type (Multiple Choice, True/False)
+
+### QuestionCard Component
+- 30-second countdown timer per question
+- Visual progress bar for time remaining
+- Shuffled answer options with letter labels (A, B, C, D)
+- Immediate feedback showing correct/incorrect answers
+- HTML entity decoding for special characters
+- Smooth animations and hover effects
+
+### Game Logic
+- Real-time score tracking
+- Question progression with automatic advancement
+- Answer validation and scoring
+- Complete game state management
+
+### Results Screen
+- Final score display with percentage
+- Comprehensive answer review
+- Color-coded feedback (green for correct, red for incorrect)
+- Options to play again or change settings
+
+### Technical Implementation
+- **API Integration**: Fetches questions from Open Trivia Database API
+- **Error Handling**: Graceful handling of API failures and network issues
+- **Responsive Design**: Works on mobile and desktop using Bootstrap
+- **Performance**: Optimized with React hooks (useCallback, useEffect)
+- **Code Quality**: Passes ESLint checks with no warnings
+
+### Game Flow
+1. **Setup** → Select category, difficulty, and number of questions
+2. **Playing** → Answer questions with timer and immediate feedback
+3. **Results** → Review performance and play again
