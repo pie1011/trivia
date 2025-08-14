@@ -1,48 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎮 Retro Trivia Arcade
 
-## Getting Started
+A nostalgic 80s-style trivia game featuring bright neon colors, retro typography, and an authentic arcade aesthetic. Test your knowledge across multiple categories with questions sourced from the Open Trivia Database.
+
+**🎲 Play Now:** [khtrivia.netlify.app](https://khtrivia.netlify.app)
+
+## ✨ Features
+
+### 🎨 Retro Arcade Aesthetic
+- **Neon Color Palette**: Hot pink, cyan, lime green, electric purple, and orange
+- **Retro Typography**: Orbitron, Rajdhani, JetBrains Mono, and Press Start 2P fonts
+- **CRT Monitor Effects**: Scanlines and vintage monitor styling
+- **Animated Elements**: Color-cycling titles and smooth transitions
+
+### 🎯 Game Features
+- **Multiple Categories**: General Knowledge, Science, History, Sports, and more
+- **Difficulty Levels**: Easy, Medium, and Hard questions
+- **Question Types**: Multiple choice and True/False formats
+- **Configurable Games**: Choose 5, 10, 15, or 20 questions per game
+- **Timer System**: 30-second countdown per question
+- **Score Tracking**: Real-time scoring with performance rankings
+- **Answer Review**: Detailed review of all answers at game end
+
+### 🏆 Ranking System
+- **LEGENDARY** (90%+): Master level performance
+- **EXPERT** (80-89%): Advanced knowledge
+- **SKILLED** (70-79%): Good performance
+- **NOVICE** (60-69%): Learning progress
+- **BEGINNER** (<60%): Keep practicing!
+
+## 🚀 Quick Start
+
+The app comes pre-configured with beginner-friendly defaults:
+- **Category**: General Knowledge
+- **Difficulty**: Easy
+- **Questions**: 5
+- **Type**: Multiple Choice
+
+Simply click "START GAME" to begin, or customize your preferences first!
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Styling**: CSS with custom properties, Bootstrap 5.3.7
+- **API**: Open Trivia Database (opentdb.com)
+- **Fonts**: Google Fonts integration
+- **Deployment**: Netlify
+
+## 💻 Development
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint checks
+```
 
-## Learn More
+## 🎮 Game Flow
 
-To learn more about Next.js, take a look at the following resources:
+1. **Setup Screen**: Configure your game settings or use the defaults
+2. **Question Phase**: Answer questions with visual feedback and timer
+3. **Results Screen**: Review your performance with detailed answer breakdown
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Visual Design
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app features a clean, crisp neon aesthetic without glow effects - like a pristine retro arcade monitor. Every element uses bright, high-contrast colors for optimal readability while maintaining the authentic 80s gaming vibe.
 
-## Deploy on Vercel
+## 👨‍💻 Created By
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Katie Harshman**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with Next.js and powered by the Open Trivia Database API.
+
+---
+
+*Experience the golden age of arcade gaming with modern web technology! 🕹️*
 
 
-There's a bug with the answer buttons in the trivia app: when I click on an answer button, it turns black and appears to disappear against the dark background.
-The following might be a way to fix this:
-
-Find the QuestionCard component and examine the answer button click handlers and styling
-Look for any CSS or inline styles that set background-color: black or color: black when buttons are clicked, selected, or in active state
-Ensure that when an answer is selected/clicked, it maintains good visibility with the neon arcade theme (use bright neon colors instead of black) and make them solid when chosen.
-Check for any :active, :focus, or .selected CSS states that might be causing this
-Also check for any Bootstrap button classes that might be overriding the custom neon styling
-
-The buttons should remain visible and use the retro neon color scheme even when clicked or selected. Make sure the selected state is clearly distinguishable but still fits the arcade aesthetic.

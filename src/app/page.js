@@ -13,9 +13,9 @@ export default function TriviaGame() {
   
   // Game settings
   const [settings, setSettings] = useState({
-    category: '',
-    difficulty: 'medium',
-    amount: 10,
+    category: '9', // General Knowledge category ID
+    difficulty: 'easy',
+    amount: 5,
     type: 'multiple'
   })
 
@@ -156,8 +156,7 @@ export default function TriviaGame() {
                   <div className="p-3 mb-4 border rounded neon-red" 
                        style={{ 
                          backgroundColor: 'var(--space-dark)', 
-                         borderColor: 'var(--neon-red)',
-                         boxShadow: 'var(--glow-medium)'
+                         borderColor: 'var(--neon-red)'
                        }}>
                     <div className="font-mono">⚠ ERROR: {error}</div>
                   </div>

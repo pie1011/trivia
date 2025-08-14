@@ -142,8 +142,7 @@ const QuestionCard = ({
           <div className={`p-3 mb-4 border rounded ${isCorrect ? 'neon-green' : 'neon-red'}`} 
                style={{ 
                  backgroundColor: 'var(--space-dark)', 
-                 borderColor: isCorrect ? 'var(--neon-green)' : 'var(--neon-red)',
-                 boxShadow: isCorrect ? 'var(--glow-medium)' : 'var(--glow-medium)'
+                 borderColor: isCorrect ? 'var(--neon-green)' : 'var(--neon-red)'
                }}>
             <div className="font-mono">
               <strong>{isCorrect ? '✓ CORRECT!' : '✗ INCORRECT!'}</strong>
