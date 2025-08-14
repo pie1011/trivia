@@ -40,3 +40,31 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Trivia Game Styles */
+.question-text {
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.answer-button {
+  transition: all 0.2s ease-in-out;
+  text-align: left !important;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.answer-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.review-answers {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
