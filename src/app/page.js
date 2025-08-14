@@ -67,6 +67,9 @@ export default function TriviaGame() {
       if (data.response_code !== 0) {
         throw new Error('Failed to fetch questions. Please try different settings.')
       }
+
+      // Log the received questions for debugging
+      console.log('Questions received:', data.results)
       
       // Process questions to include shuffled answers
       const processedQuestions = data.results.map(q => {
@@ -388,8 +391,8 @@ export default function TriviaGame() {
                     <div className="font-title" style={{ color, fontSize: '3rem' }}>
                       {percentage}%
                     </div>
-                    <div className="font-body neon-cyan">
-                      {categories.find(c => c.id == settings.category)?.name} | 
+                    <div className="font-mono neon-cyan">
+                      {categories.find(c => c.id == settings.category)?.name} | &nbsp;
                       {settings.difficulty.toUpperCase()} MODE
                     </div>
                   </div>
@@ -419,12 +422,12 @@ export default function TriviaGame() {
                         
                         <div className="font-body">
                           <div className="mb-2">
-                            <span className="neon-cyan">YOUR ANSWER:</span> 
-                            <span className="ms-2 neon-lime">{decodeHTML(answer.selectedAnswer || 'No answer')}</span>
+                            <span className="neon-cyan font-mono">YOUR ANSWER:</span> 
+                            <span className="ms-2 neon-lime font-mono">{decodeHTML(answer.selectedAnswer || 'No answer')}</span>
                           </div>
                           {!answer.isCorrect && (
                             <div className="neon-green">
-                              <span>CORRECT ANSWER:</span> 
+                              <span className="font-mono">CORRECT ANSWER:</span> 
                               <span className="ms-2 font-mono neon-green">{decodeHTML(answer.question.correct_answer)}</span>
                             </div>
                           )}
