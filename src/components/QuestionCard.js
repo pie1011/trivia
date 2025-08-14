@@ -15,6 +15,7 @@ const QuestionCard = ({
   const [showFeedback, setShowFeedback] = useState(false)
   const [timeLeft, setTimeLeft] = useState(timePerQuestion)
   const [isCorrect, setIsCorrect] = useState(false)
+  const [showGlitch, setShowGlitch] = useState(false)
 
   // Decode HTML entities
   const decodeHTML = (text) => {
@@ -29,6 +30,12 @@ const QuestionCard = ({
     setShowFeedback(false)
     setTimeLeft(timePerQuestion)
     setIsCorrect(false)
+    
+    // Trigger glitch effect on question change
+    if (question) {
+      setShowGlitch(true)
+      setTimeout(() => setShowGlitch(false), 300)
+    }
   }, [question, timePerQuestion])
 
   const handleAnswer = useCallback((answer) => {
@@ -56,105 +63,126 @@ const QuestionCard = ({
   }, [timeLeft, showFeedback, handleAnswer])
 
 
-  const getButtonVariant = (answer) => {
-    if (!showFeedback) {
-      return selectedAnswer === answer ? 'primary' : 'outline-primary'
+  const getAnswerClasses = (answer, index) => {
+    const baseClass = 'retro-btn w-100 text-start mb-2'
+    const colorClasses = ['answer-btn-a', 'answer-btn-b', 'answer-btn-c', 'answer-btn-d']
+    const colorClass = colorClasses[index] || 'answer-btn-a'
+    
+    let statusClass = ''
+    if (showFeedback) {
+      if (answer === question.correct_answer) {
+        statusClass = 'neon-green'
+      } else if (answer === selectedAnswer && !isCorrect) {
+        statusClass = 'neon-red'
+      }
+    } else if (selectedAnswer === answer) {
+      statusClass = 'neon-pulse'
     }
     
-    if (answer === question.correct_answer) {
-      return 'success'
-    } else if (answer === selectedAnswer && !isCorrect) {
-      return 'danger'
-    }
-    return 'outline-secondary'
+    return `${baseClass} ${colorClass} ${statusClass}`.trim()
   }
 
-  const getTimeVariant = () => {
-    if (timeLeft > 15) return 'success'
-    if (timeLeft > 5) return 'warning'
-    return 'danger'
+  const getTimerColor = () => {
+    if (timeLeft > 20) return 'var(--neon-green)'
+    if (timeLeft > 10) return 'var(--neon-orange)'
+    return 'var(--neon-red)'
   }
 
   if (!question) {
     return (
-      <Card className="shadow-lg">
-        <Card.Body className="text-center p-5">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading question...</span>
+      <div className="question-card">
+        <div className="text-center p-5">
+          <div className="loading-pulse neon-cyan font-mono" style={{ fontSize: '2rem' }}>
+            ◄ ► ◄ ►
           </div>
-          <p className="mt-3">Loading next question...</p>
-        </Card.Body>
-      </Card>
+          <p className="mt-3 neon-cyan">Loading next question...</p>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Card className="shadow-lg">
-      <Card.Header className="bg-primary text-white">
-        <div className="d-flex justify-content-between align-items-center">
-          <h5 className="mb-0">
-            Question {currentQuestion} of {totalQuestions}
+    <div className={`question-card ${showGlitch ? 'glitch' : ''}`}>
+      {/* Header with Progress and Timer */}
+      <div className="d-flex justify-content-between align-items-center p-4 border-bottom" style={{ borderColor: 'var(--neon-cyan)' }}>
+        <div>
+          <h5 className="mb-0 font-title neon-cyan">
+            <span className="font-retro">Q</span> {currentQuestion}/{totalQuestions}
           </h5>
-          <div className="text-end">
-            <small>Time: {timeLeft}s</small>
-            <ProgressBar 
-              now={(timeLeft / timePerQuestion) * 100} 
-              variant={getTimeVariant()}
-              style={{ width: '100px', height: '8px' }}
-              className="mt-1"
-            />
+        </div>
+        <div className="timer-container">
+          <div 
+            className="timer-circle"
+            style={{ 
+              '--progress': `${(timeLeft / timePerQuestion) * 100}%`,
+              borderColor: getTimerColor()
+            }}
+          >
+            <div className="timer-inner" style={{ color: getTimerColor() }}>
+              {timeLeft}
+            </div>
           </div>
         </div>
-      </Card.Header>
+      </div>
       
-      <Card.Body className="p-4">
-        <div className="mb-4">
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <span className="badge bg-secondary">{question.category}</span>
-            <span className="badge bg-info">
-              {question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1)}
-            </span>
-          </div>
-          
-          <h4 className="question-text">{decodeHTML(question.question)}</h4>
+      <div className="p-4">
+        {/* Category and Difficulty Badges */}
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <span className="category-pill">{question.category}</span>
+          <span className="category-pill" style={{ borderColor: 'var(--neon-orange)', color: 'var(--neon-orange)' }}>
+            {question.difficulty.charAt(0).toUpperCase() + question.difficulty.slice(1)}
+          </span>
         </div>
+        
+        {/* Question Text */}
+        <h4 className="question-text">{decodeHTML(question.question)}</h4>
 
+        {/* Feedback Alert */}
         {showFeedback && (
-          <Alert variant={isCorrect ? 'success' : 'danger'} className="mb-3">
-            <strong>{isCorrect ? '✅ Correct!' : '❌ Incorrect!'}</strong>
-            {!isCorrect && (
-              <div className="mt-1">
-                The correct answer was: <strong>{decodeHTML(question.correct_answer)}</strong>
-              </div>
-            )}
-          </Alert>
+          <div className={`p-3 mb-4 border rounded ${isCorrect ? 'neon-green' : 'neon-red'}`} 
+               style={{ 
+                 backgroundColor: 'var(--space-dark)', 
+                 borderColor: isCorrect ? 'var(--neon-green)' : 'var(--neon-red)',
+                 boxShadow: isCorrect ? 'var(--glow-medium)' : 'var(--glow-medium)'
+               }}>
+            <div className="font-mono">
+              <strong>{isCorrect ? '✓ CORRECT!' : '✗ INCORRECT!'}</strong>
+              {!isCorrect && (
+                <div className="mt-2 neon-green">
+                  Correct answer: <strong>{decodeHTML(question.correct_answer)}</strong>
+                </div>
+              )}
+            </div>
+          </div>
         )}
 
-        <div className="d-grid gap-2">
+        {/* Answer Buttons */}
+        <div className="d-grid gap-3">
           {question.all_answers.map((answer, index) => (
-            <Button
+            <button
               key={index}
-              variant={getButtonVariant(answer)}
-              size="lg"
+              className={getAnswerClasses(answer, index)}
               onClick={() => handleAnswer(answer)}
               disabled={showFeedback}
-              className="text-start answer-button"
             >
-              <span className="me-2 fw-bold">
-                {String.fromCharCode(65 + index)}.
+              <span className="font-mono me-3 neon-pulse">
+                [{String.fromCharCode(65 + index)}]
               </span>
-              {decodeHTML(answer)}
-            </Button>
+              <span className="font-body">{decodeHTML(answer)}</span>
+            </button>
           ))}
         </div>
 
+        {/* Next Question Countdown */}
         {showFeedback && (
-          <div className="text-center mt-3">
-            <small className="text-muted">Next question in 2 seconds...</small>
+          <div className="text-center mt-4">
+            <div className="font-mono neon-cyan loading-pulse">
+              ► NEXT QUESTION IN 2 SECONDS ◄
+            </div>
           </div>
         )}
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   )
 }
 

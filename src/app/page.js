@@ -138,116 +138,160 @@ export default function TriviaGame() {
   const renderSetupScreen = () => (
     <Container className="py-5">
       <Row className="justify-content-center">
-        <Col md={8} lg={6}>
-          <Card className="shadow-lg">
-            <Card.Header className="bg-primary text-white text-center">
-              <h2 className="mb-0">🧠 Trivia Challenge</h2>
-            </Card.Header>
-            <Card.Body className="p-4">
-              <h5 className="text-center mb-4">Configure Your Game</h5>
+        <Col md={10} lg={8}>
+          <div className="crt-monitor">
+            <div className="retro-container">
+              {/* Arcade Title */}
+              <div className="text-center p-4 border-bottom" style={{ borderColor: 'var(--neon-pink)' }}>
+                <h1 className="font-title neon-cycle mb-2" style={{ fontSize: '2.5rem' }}>
+                  TRIVIA ARCADE
+                </h1>
+                <div className="font-retro neon-pink">INSERT COIN TO PLAY</div>
+              </div>
               
-              {error && (
-                <Alert variant="danger" dismissible onClose={() => setError('')}>
-                  {error}
-                </Alert>
-              )}
+              <div className="p-4">
+                <h3 className="font-title neon-cyan text-center mb-4">CONFIGURE GAME</h3>
+                
+                {error && (
+                  <div className="p-3 mb-4 border rounded neon-red" 
+                       style={{ 
+                         backgroundColor: 'var(--space-dark)', 
+                         borderColor: 'var(--neon-red)',
+                         boxShadow: 'var(--glow-medium)'
+                       }}>
+                    <div className="font-mono">⚠ ERROR: {error}</div>
+                  </div>
+                )}
 
-              <Form>
                 {/* Category Selection */}
-                <Form.Group className="mb-3">
-                  <Form.Label>Category</Form.Label>
-                  <Form.Select 
+                <div className="mb-4">
+                  <label className="font-title neon-purple mb-3 d-block">CATEGORY</label>
+                  <select 
+                    className="retro-btn w-100 font-body"
+                    style={{ 
+                      backgroundColor: 'var(--space-dark)',
+                      color: 'var(--neon-cyan)',
+                      border: '2px solid var(--neon-cyan)'
+                    }}
                     value={settings.category}
                     onChange={(e) => handleSettingChange('category', e.target.value)}
                     disabled={loading}
                   >
-                    <option value="">Select a category...</option>
+                    <option value="">► SELECT CATEGORY ◄</option>
                     {categories.map(cat => (
-                      <option key={cat.id} value={cat.id}>
+                      <option key={cat.id} value={cat.id} style={{ backgroundColor: 'var(--space-dark)' }}>
                         {cat.name}
                       </option>
                     ))}
-                  </Form.Select>
-                </Form.Group>
+                  </select>
+                </div>
 
                 {/* Difficulty Selection */}
-                <Form.Group className="mb-3">
-                  <Form.Label>Difficulty</Form.Label>
-                  <div>
-                    {['easy', 'medium', 'hard'].map(diff => (
-                      <Form.Check
-                        key={diff}
-                        inline
-                        type="radio"
-                        name="difficulty"
-                        id={`difficulty-${diff}`}
-                        label={diff.charAt(0).toUpperCase() + diff.slice(1)}
-                        checked={settings.difficulty === diff}
-                        onChange={() => handleSettingChange('difficulty', diff)}
-                      />
-                    ))}
+                <div className="mb-4">
+                  <label className="font-title neon-lime mb-3 d-block">DIFFICULTY LEVEL</label>
+                  <div className="d-flex gap-2 flex-wrap">
+                    {['easy', 'medium', 'hard'].map((diff, index) => {
+                      const colors = ['var(--neon-green)', 'var(--neon-orange)', 'var(--neon-red)']
+                      const isSelected = settings.difficulty === diff
+                      return (
+                        <button
+                          key={diff}
+                          type="button"
+                          className={`retro-btn ${isSelected ? 'neon-pulse' : ''}`}
+                          style={{ 
+                            color: colors[index],
+                            borderColor: colors[index],
+                            backgroundColor: isSelected ? colors[index] : 'transparent',
+                            color: isSelected ? 'var(--space-black)' : colors[index]
+                          }}
+                          onClick={() => handleSettingChange('difficulty', diff)}
+                        >
+                          {diff.toUpperCase()}
+                        </button>
+                      )
+                    })}
                   </div>
-                </Form.Group>
+                </div>
 
                 {/* Number of Questions */}
-                <Form.Group className="mb-3">
-                  <Form.Label>Number of Questions</Form.Label>
-                  <Form.Select
-                    value={settings.amount}
-                    onChange={(e) => handleSettingChange('amount', parseInt(e.target.value))}
-                  >
-                    <option value={5}>5 Questions</option>
-                    <option value={10}>10 Questions</option>
-                    <option value={15}>15 Questions</option>
-                    <option value={20}>20 Questions</option>
-                  </Form.Select>
-                </Form.Group>
+                <div className="mb-4">
+                  <label className="font-title neon-orange mb-3 d-block">QUESTION COUNT</label>
+                  <div className="d-flex gap-2 flex-wrap">
+                    {[5, 10, 15, 20].map(amount => {
+                      const isSelected = settings.amount === amount
+                      return (
+                        <button
+                          key={amount}
+                          type="button"
+                          className={`retro-btn ${isSelected ? 'neon-pulse' : ''}`}
+                          style={{ 
+                            color: 'var(--neon-orange)',
+                            backgroundColor: isSelected ? 'var(--neon-orange)' : 'transparent',
+                            color: isSelected ? 'var(--space-black)' : 'var(--neon-orange)'
+                          }}
+                          onClick={() => handleSettingChange('amount', amount)}
+                        >
+                          {amount}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
 
                 {/* Question Type */}
-                <Form.Group className="mb-4">
-                  <Form.Label>Question Type</Form.Label>
-                  <div>
-                    <Form.Check
-                      inline
-                      type="radio"
-                      name="type"
-                      id="type-multiple"
-                      label="Multiple Choice"
-                      checked={settings.type === 'multiple'}
-                      onChange={() => handleSettingChange('type', 'multiple')}
-                    />
-                    <Form.Check
-                      inline
-                      type="radio"
-                      name="type"
-                      id="type-boolean"
-                      label="True/False"
-                      checked={settings.type === 'boolean'}
-                      onChange={() => handleSettingChange('type', 'boolean')}
-                    />
+                <div className="mb-4">
+                  <label className="font-title neon-blue mb-3 d-block">GAME MODE</label>
+                  <div className="d-flex gap-3">
+                    <button
+                      type="button"
+                      className={`retro-btn ${settings.type === 'multiple' ? 'neon-pulse' : ''}`}
+                      style={{ 
+                        color: 'var(--neon-blue)',
+                        backgroundColor: settings.type === 'multiple' ? 'var(--neon-blue)' : 'transparent',
+                        color: settings.type === 'multiple' ? 'var(--space-black)' : 'var(--neon-blue)'
+                      }}
+                      onClick={() => handleSettingChange('type', 'multiple')}
+                    >
+                      MULTIPLE CHOICE
+                    </button>
+                    <button
+                      type="button"
+                      className={`retro-btn ${settings.type === 'boolean' ? 'neon-pulse' : ''}`}
+                      style={{ 
+                        color: 'var(--neon-blue)',
+                        backgroundColor: settings.type === 'boolean' ? 'var(--neon-blue)' : 'transparent',
+                        color: settings.type === 'boolean' ? 'var(--space-black)' : 'var(--neon-blue)'
+                      }}
+                      onClick={() => handleSettingChange('type', 'boolean')}
+                    >
+                      TRUE/FALSE
+                    </button>
                   </div>
-                </Form.Group>
+                </div>
 
-                <div className="d-grid">
-                  <Button 
-                    variant="primary" 
-                    size="lg" 
+                {/* Start Game Button */}
+                <div className="text-center mt-5">
+                  <button 
+                    className={`retro-btn font-title ${loading ? 'loading-pulse' : 'neon-pulse'}`}
+                    style={{ 
+                      fontSize: '1.5rem',
+                      padding: '15px 40px',
+                      color: 'var(--neon-pink)',
+                      borderColor: 'var(--neon-pink)'
+                    }}
                     onClick={startGame}
                     disabled={loading || !settings.category}
                   >
                     {loading ? (
-                      <>
-                        <Spinner animation="border" size="sm" className="me-2" />
-                        Loading...
-                      </>
+                      <span className="font-mono">◄ LOADING ►</span>
                     ) : (
-                      'Start Game 🚀'
+                      'START GAME'
                     )}
-                  </Button>
+                  </button>
                 </div>
-              </Form>
-            </Card.Body>
-          </Card>
+              </div>
+            </div>
+          </div>
         </Col>
       </Row>
     </Container>
@@ -256,34 +300,37 @@ export default function TriviaGame() {
   const renderGameScreen = () => (
     <Container className="py-5">
       <Row className="justify-content-center">
-        <Col md={10} lg={8}>
-          {/* Score and Progress Header */}
-          <Card className="mb-4 shadow-sm">
-            <Card.Body className="py-3">
-              <Row className="align-items-center">
-                <Col>
-                  <h5 className="mb-0">
-                    Score: <span className="text-primary">{score}/{questions.length}</span>
-                  </h5>
-                </Col>
-                <Col className="text-center">
-                  <small className="text-muted">
-                    {categories.find(c => c.id == settings.category)?.name} | 
-                    {settings.difficulty.charAt(0).toUpperCase() + settings.difficulty.slice(1)}
-                  </small>
-                </Col>
-                <Col className="text-end">
-                  <Button 
-                    variant="outline-secondary" 
-                    size="sm"
-                    onClick={resetGame}
-                  >
-                    Quit Game
-                  </Button>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
+        <Col md={12} lg={10}>
+          {/* Arcade Game Header */}
+          <div className="retro-container mb-4">
+            <div className="d-flex justify-content-between align-items-center p-3">
+              <div className="score-display">
+                <span className="font-retro">SCORE: </span>
+                <span className="font-mono">{score.toString().padStart(3, '0')}/{questions.length.toString().padStart(3, '0')}</span>
+              </div>
+              
+              <div className="text-center">
+                <div className="font-title neon-pink" style={{ fontSize: '1.2rem' }}>
+                  ARCADE MODE
+                </div>
+                <div className="font-body neon-cyan" style={{ fontSize: '0.9rem' }}>
+                  {categories.find(c => c.id == settings.category)?.name} | 
+                  {settings.difficulty.toUpperCase()}
+                </div>
+              </div>
+              
+              <button 
+                className="retro-btn"
+                style={{ 
+                  color: 'var(--neon-red)',
+                  borderColor: 'var(--neon-red)'
+                }}
+                onClick={resetGame}
+              >
+                <span className="font-retro">QUIT</span>
+              </button>
+            </div>
+          </div>
 
           {/* Question Card */}
           <QuestionCard
@@ -306,70 +353,117 @@ export default function TriviaGame() {
       return textarea.value
     }
 
+    const getScoreRank = () => {
+      if (percentage >= 90) return { rank: 'LEGENDARY', color: 'var(--neon-pink)' }
+      if (percentage >= 80) return { rank: 'EXPERT', color: 'var(--neon-purple)' }
+      if (percentage >= 70) return { rank: 'SKILLED', color: 'var(--neon-cyan)' }
+      if (percentage >= 60) return { rank: 'NOVICE', color: 'var(--neon-lime)' }
+      return { rank: 'BEGINNER', color: 'var(--neon-orange)' }
+    }
+
+    const { rank, color } = getScoreRank()
+
     return (
       <Container className="py-5">
         <Row className="justify-content-center">
-          <Col md={10} lg={8}>
-            <Card className="shadow-lg">
-              <Card.Header className="bg-info text-white text-center">
-                <h2 className="mb-0">🎉 Game Complete!</h2>
-              </Card.Header>
-              <Card.Body className="p-4">
-                <div className="text-center mb-4">
-                  <h3>Final Score: {score}/{questions.length}</h3>
-                  <h4 className="text-primary">{percentage}%</h4>
-                  <p className="text-muted">
-                    Category: {categories.find(c => c.id == settings.category)?.name} | 
-                    Difficulty: {settings.difficulty.charAt(0).toUpperCase() + settings.difficulty.slice(1)}
-                  </p>
+          <Col md={12} lg={10}>
+            <div className="crt-monitor">
+              <div className="retro-container results-celebration">
+                {/* Results Header */}
+                <div className="text-center p-4 border-bottom" style={{ borderColor: color }}>
+                  <h1 className="font-title neon-cycle mb-3" style={{ fontSize: '2.5rem' }}>
+                    GAME OVER
+                  </h1>
+                  <div className="font-retro neon-pulse" style={{ color, fontSize: '1.2rem' }}>
+                    RANK: {rank}
+                  </div>
                 </div>
 
-                <h5 className="mb-3">Review Your Answers:</h5>
-                <div className="review-answers">
-                  {userAnswers.map((answer, index) => (
-                    <Card key={index} className={`mb-3 border-start border-5 ${answer.isCorrect ? 'border-success' : 'border-danger'}`}>
-                      <Card.Body className="py-3">
+                <div className="p-4">
+                  {/* Score Display */}
+                  <div className="text-center mb-5">
+                    <div className="score-display d-inline-block mb-3" style={{ fontSize: '2rem' }}>
+                      <span className="font-retro">FINAL SCORE: </span>
+                      <span className="font-mono neon-pulse">{score}/{questions.length}</span>
+                    </div>
+                    <div className="font-title" style={{ color, fontSize: '3rem' }}>
+                      {percentage}%
+                    </div>
+                    <div className="font-body neon-cyan">
+                      {categories.find(c => c.id == settings.category)?.name} | 
+                      {settings.difficulty.toUpperCase()} MODE
+                    </div>
+                  </div>
+
+                  {/* Review Section */}
+                  <h3 className="font-title neon-cyan mb-4 text-center">ANSWER REVIEW</h3>
+                  <div className="review-answers">
+                    {userAnswers.map((answer, index) => (
+                      <div 
+                        key={index} 
+                        className={`answer-review-card p-3 mb-3 ${answer.isCorrect ? 'correct' : 'incorrect'}`}
+                      >
                         <div className="d-flex justify-content-between align-items-start mb-2">
-                          <span className="badge bg-secondary">Question {index + 1}</span>
-                          <span className={`badge ${answer.isCorrect ? 'bg-success' : 'bg-danger'}`}>
-                            {answer.isCorrect ? '✅ Correct' : '❌ Incorrect'}
+                          <span className="category-pill font-mono">Q{index + 1}</span>
+                          <span 
+                            className="category-pill font-mono"
+                            style={{ 
+                              borderColor: answer.isCorrect ? 'var(--neon-green)' : 'var(--neon-red)',
+                              color: answer.isCorrect ? 'var(--neon-green)' : 'var(--neon-red)'
+                            }}
+                          >
+                            {answer.isCorrect ? '✓ CORRECT' : '✗ WRONG'}
                           </span>
                         </div>
-                        <h6 className="mb-2">{decodeHTML(answer.question.question)}</h6>
-                        <div className="small">
-                          <div className="mb-1">
-                            <strong>Your answer:</strong> {decodeHTML(answer.selectedAnswer || 'No answer')}
+                        
+                        <h6 className="question-text mb-3">{decodeHTML(answer.question.question)}</h6>
+                        
+                        <div className="font-body">
+                          <div className="mb-2">
+                            <span className="neon-cyan">YOUR ANSWER:</span> 
+                            <span className="ms-2">{decodeHTML(answer.selectedAnswer || 'No answer')}</span>
                           </div>
                           {!answer.isCorrect && (
-                            <div className="text-success">
-                              <strong>Correct answer:</strong> {decodeHTML(answer.question.correct_answer)}
+                            <div className="neon-green">
+                              <span>CORRECT ANSWER:</span> 
+                              <span className="ms-2 font-mono">{decodeHTML(answer.question.correct_answer)}</span>
                             </div>
                           )}
                         </div>
-                      </Card.Body>
-                    </Card>
-                  ))}
-                </div>
+                      </div>
+                    ))}
+                  </div>
 
-                <div className="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
-                  <Button 
-                    variant="primary" 
-                    size="lg"
-                    onClick={resetGame}
-                    className="me-md-2"
-                  >
-                    Play Again
-                  </Button>
-                  <Button 
-                    variant="outline-secondary" 
-                    size="lg"
-                    onClick={() => setGameState('setup')}
-                  >
-                    Change Settings
-                  </Button>
+                  {/* Action Buttons */}
+                  <div className="d-flex gap-3 justify-content-center mt-5 flex-wrap">
+                    <button 
+                      className="retro-btn font-title neon-pulse"
+                      style={{ 
+                        fontSize: '1.2rem',
+                        padding: '12px 30px',
+                        color: 'var(--neon-pink)',
+                        borderColor: 'var(--neon-pink)'
+                      }}
+                      onClick={resetGame}
+                    >
+                      PLAY AGAIN
+                    </button>
+                    <button 
+                      className="retro-btn font-title"
+                      style={{ 
+                        fontSize: '1.2rem',
+                        padding: '12px 30px',
+                        color: 'var(--neon-cyan)',
+                        borderColor: 'var(--neon-cyan)'
+                      }}
+                      onClick={() => setGameState('setup')}
+                    >
+                      NEW GAME
+                    </button>
+                  </div>
                 </div>
-              </Card.Body>
-            </Card>
+              </div>
+            </div>
           </Col>
         </Row>
       </Container>
@@ -378,7 +472,7 @@ export default function TriviaGame() {
 
   // Main render
   return (
-    <div className="min-vh-100 bg-light">
+    <div className="min-vh-100" style={{ background: 'var(--space-black)' }}>
       {gameState === 'setup' && renderSetupScreen()}
       {gameState === 'playing' && renderGameScreen()}
       {gameState === 'results' && renderResultsScreen()}
