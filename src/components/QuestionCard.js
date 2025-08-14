@@ -71,12 +71,12 @@ const QuestionCard = ({
     let statusClass = ''
     if (showFeedback) {
       if (answer === question.correct_answer) {
-        statusClass = 'neon-green'
+        statusClass = 'answer-btn-correct'
       } else if (answer === selectedAnswer && !isCorrect) {
-        statusClass = 'neon-red'
+        statusClass = 'answer-btn-incorrect'
       }
     } else if (selectedAnswer === answer) {
-      statusClass = 'neon-pulse'
+      statusClass = 'answer-btn-selected'
     }
     
     return `${baseClass} ${colorClass} ${statusClass}`.trim()

@@ -421,12 +421,12 @@ export default function TriviaGame() {
                         <div className="font-body">
                           <div className="mb-2">
                             <span className="neon-cyan">YOUR ANSWER:</span> 
-                            <span className="ms-2">{decodeHTML(answer.selectedAnswer || 'No answer')}</span>
+                            <span className="ms-2 neon-lime">{decodeHTML(answer.selectedAnswer || 'No answer')}</span>
                           </div>
                           {!answer.isCorrect && (
                             <div className="neon-green">
                               <span>CORRECT ANSWER:</span> 
-                              <span className="ms-2 font-mono">{decodeHTML(answer.question.correct_answer)}</span>
+                              <span className="ms-2 font-mono neon-green">{decodeHTML(answer.question.correct_answer)}</span>
                             </div>
                           )}
                         </div>
